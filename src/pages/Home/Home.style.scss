@@ -1,0 +1,39 @@
+.states-grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  padding-inline: 5vw;
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+    padding-inline: 2vw;
+  }
+  @media (max-width: 480px) {
+    padding-inline: 0;
+  }
+  gap: 1rem;
+}
+
+.auto-complete-container {
+  width: 100%;
+  max-width: 50vw;
+  margin: 0 auto;
+}
+
+.states-container {
+    .states-card {
+        background-color: var(--surface-card);
+        border-color: var(--surface-border);
+        color: var(--text-color);
+        .states-icon {
+            color: var(--primary-color);
+            transition: all 0.2s ease;
+        }
+        transition: all 0.2s ease;
+      &:hover {
+        background-color: var(--primary-color);
+        color: var(--surface-0);
+        .states-icon {
+            color: var(--surface-a);
+        }
+      }
+    }
+}

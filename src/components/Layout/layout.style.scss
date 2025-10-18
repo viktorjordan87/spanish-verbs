@@ -1,0 +1,87 @@
+:root,html,body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  .header{
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+  }
+  .main{
+    flex: 1; 
+    display: flex; 
+    flex-direction: column; 
+    min-height: 0; 
+    min-width: 0;
+    padding-bottom: 80px; // Add padding to account for fixed footer
+  }
+  .footer{
+    flex-shrink: 0;
+    background: var(--surface-ground);
+    border-top: 1px solid var(--surface-border);
+    box-shadow: 0 -2px 8px var(--surface-200);
+    padding: 0.5rem 0;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+
+    .footer-navigation {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      max-width: 100%;
+      margin: 0 auto;
+      padding: 0 1rem;
+
+      .nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 0.5rem 1rem;
+        text-decoration: none;
+        color: var(--text-color-secondary);
+        transition: all 0.2s ease;
+        border-radius: 0.5rem;
+        min-width: 60px;
+        gap: 0.25rem;
+
+        &:hover {
+          color: var(--primary-color);
+          background-color: var(--surface-100);
+        }
+
+        &.active {
+          color: var(--primary-color);
+          background-color: var(--primary-50);
+          
+          svg {
+            color: var(--primary-color);
+          }
+        }
+
+        span {
+          font-size: 0.75rem;
+          font-weight: 500;
+          text-align: center;
+        }
+
+        svg {
+          color: inherit;
+          transition: color 0.2s ease;
+        }
+      }
+    }
+  }
+}
