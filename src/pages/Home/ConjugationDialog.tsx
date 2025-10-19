@@ -1,9 +1,12 @@
 import { Dialog } from "primereact/dialog";
+import { CircleX, CircleCheck } from "lucide-react";
+import { useState, useEffect, useMemo } from "react";
+import { Gif } from "@/components/Gif";
 
 interface ConjugationData {
   yo: string;
-  tú: string;
-  él: string;
+  tu: string;
+  el: string;
   nosotros: string;
   vosotros: string;
   ellos: string;
@@ -31,49 +34,86 @@ export const ConjugationDialog = ({
     </div>
   );
 
+  const initialFollowUp = useMemo(
+    () => ({
+      yo: undefined,
+      tu: undefined,
+      el: undefined,
+      nosotros: undefined,
+      vosotros: undefined,
+      ellos: undefined,
+    }),
+    []
+  );
+
+  const [followUp, setFollowUp] = useState<{
+    [key in keyof ConjugationData]: boolean | undefined;
+  }>(initialFollowUp);
+
+  // Reset followUp state when dialog closes
+  useEffect(() => {
+    if (!visible) {
+      setFollowUp(initialFollowUp);
+    }
+  }, [visible, initialFollowUp]);
+
+  const onClickOnPronoun = (pronoun: string) => {
+    console.log(pronoun);
+    setFollowUp((prev) => ({
+      ...prev,
+      [pronoun as keyof ConjugationData]:
+        prev[pronoun as keyof ConjugationData] === false ? undefined : false,
+    }));
+  };
+
+  const onClickOnConjugation = (pronoun: string) => {
+    console.log(conjugation);
+    setFollowUp((prev) => ({
+      ...prev,
+      [pronoun as keyof ConjugationData]:
+        prev[pronoun as keyof ConjugationData] === true ? undefined : true,
+    }));
+  };
+
+  const success = Object.values(followUp).every((value) => value === true);
+
   return (
     <Dialog
       visible={visible}
       modal
       header={headerElement}
-      style={{ width: "50rem", minHeight: "75vh" }}
+      className="conjugation-dialog"
       onHide={() => {
         if (!visible) return;
         setVisible(false);
       }}
     >
       <div className="conjugation-table">
-        <div className="grid">
-          <div className="col-12 md:col-6">
-            <div className="conjugation-row">
-              <span className="pronoun">yo</span>
-              <span className="conjugation">{conjugation.yo}</span>
+        {Object.entries(conjugation).map(([pronoun, conjugation]) => (
+          <div key={pronoun} className="conjugation-row grid gap-4">
+            <div
+              className="pronoun col"
+              onClick={() => onClickOnPronoun(pronoun)}
+            >
+              <span>{pronoun}</span>
+              {followUp[pronoun as keyof ConjugationData] === false && (
+                <CircleX className="text-red-500" />
+              )}
             </div>
-            <div className="conjugation-row">
-              <span className="pronoun">tú</span>
-              <span className="conjugation">{conjugation.tú}</span>
-            </div>
-            <div className="conjugation-row">
-              <span className="pronoun">él/ella/ud.</span>
-              <span className="conjugation">{conjugation.él}</span>
-            </div>
-          </div>
-          <div className="col-12 md:col-6">
-            <div className="conjugation-row">
-              <span className="pronoun">nosotros/as</span>
-              <span className="conjugation">{conjugation.nosotros}</span>
-            </div>
-            <div className="conjugation-row">
-              <span className="pronoun">vosotros/as</span>
-              <span className="conjugation">{conjugation.vosotros}</span>
-            </div>
-            <div className="conjugation-row">
-              <span className="pronoun">ellos/ellas/uds.</span>
-              <span className="conjugation">{conjugation.ellos}</span>
+            <div
+              className="conjugation col"
+              onClick={() => onClickOnConjugation(pronoun)}
+            >
+              <span className="font-bold text-primary-400">{conjugation}</span>
+
+              {followUp[pronoun as keyof ConjugationData] === true && (
+                <CircleCheck className="text-green-500" />
+              )}
             </div>
           </div>
-        </div>
+        ))}
       </div>
+      <Gif success={success} />
     </Dialog>
   );
 };

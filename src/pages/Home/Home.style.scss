@@ -15,6 +15,9 @@
 .auto-complete-container {
   width: 100%;
   max-width: 50vw;
+  @media (max-width: 768px) {
+    max-width: 96%;
+  }
   margin: 0 auto;
 }
 
@@ -36,4 +39,36 @@
         }
       }
     }
+}
+
+.conjugation-dialog {
+  width: 50rem;
+  min-height: 75vh;
+  @media (max-width: 768px) {
+    width: 96%;
+    min-height: 80vh;
+  }
+}
+
+.conjugation-table {
+  .conjugation-row {
+    margin-block: 1rem;
+    .pronoun, .conjugation {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding-block: 1rem;
+    border-bottom: 1px solid var(--surface-border);
+    }
+    .pronoun {
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+    .conjugation {
+      font-size: 1.2rem;
+      font-weight: 400;
+    }
+  }
 }

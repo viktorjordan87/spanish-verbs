@@ -94,8 +94,8 @@ export const States = () => {
         tense="Presente"
         conjugation={{
           yo: "hablo",
-          tú: "hablas",
-          él: "habla",
+          tu: "hablas",
+          el: "habla",
           nosotros: "hablamos",
           vosotros: "habláis",
           ellos: "hablan",
