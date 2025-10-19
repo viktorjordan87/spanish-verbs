@@ -12,6 +12,16 @@ interface ConjugationData {
   ellos: string;
 }
 
+//object keys to real conjugation keys
+const conjugationKeys = {
+  yo: "yo",
+  tu: "tú",
+  el: "él/ ella/ usted",
+  nosotros: "nosotros",
+  vosotros: "vosotros",
+  ellos: "ellos/ ellas/ ustedes",
+};
+
 export const ConjugationDialog = ({
   visible,
   setVisible,
@@ -95,7 +105,9 @@ export const ConjugationDialog = ({
               className="pronoun col"
               onClick={() => onClickOnPronoun(pronoun)}
             >
-              <span>{pronoun}</span>
+              <span>
+                {conjugationKeys[pronoun as keyof typeof conjugationKeys]}
+              </span>
               {followUp[pronoun as keyof ConjugationData] === false && (
                 <CircleX className="text-red-500" />
               )}
@@ -113,6 +125,7 @@ export const ConjugationDialog = ({
           </div>
         ))}
       </div>
+
       <Gif success={success} />
     </Dialog>
   );
