@@ -10,6 +10,12 @@
     padding-inline: 0;
   }
   gap: 1rem;
+  
+  // Ensure grid items take equal width on mobile
+  > * {
+    width: 100%;
+    min-width: 0; // Prevent grid items from overflowing
+  }
 }
 
 .auto-complete-container {
