@@ -11,7 +11,12 @@ function Home() {
     <section className="page-home p-4">
       <Search />
       {searchResultWords.length > 0 ? (
-        <States />
+        <>
+          <h3 className="text-2xl font-bold mb-0 text-700 text-center">
+            {searchResultWords[0].word}
+          </h3>
+          <States />
+        </>
       ) : (
         <div
           className="flex align-items-center justify-content-center"

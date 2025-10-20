@@ -8,6 +8,7 @@ import { QueryProvider } from "./providers/QueryProvider";
 import "primereact/resources/primereact.css";
 import "primeflex/primeflex.css";
 import "primeicons/primeicons.css";
+import "./globals.scss";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

@@ -3,6 +3,8 @@ import { CircleX, CircleCheck } from "lucide-react";
 import { useState, useEffect, useMemo } from "react";
 import { Gif } from "@/components/Gif";
 import type { TenseConjugation } from "@/types";
+import { useAtom } from "jotai";
+import { isVosotrosEnabledAtom } from "@/states/settings";
 
 //object keys to real conjugation keys
 const conjugationKeys = {
@@ -41,11 +43,11 @@ export const ConjugationDialog = ({
   tense: string;
   conjugation: TenseConjugation;
 }) => {
+  const [isVosotrosEnabled] = useAtom(isVosotrosEnabledAtom);
+
   const headerElement = (
     <div className="flex flex-column align-items-start gap-2">
-      <h3 className="font-bold text-2xl capitalize text-blue-400 mb-0">
-        {verb}
-      </h3>
+      <h3 className="font-bold text-2xl text-blue-400 mb-0">{verb}</h3>
       <h4 className="font-semibold text-base text-700 my-0">
         {tensesKeys[tense as keyof typeof tensesKeys]}
       </h4>
@@ -76,7 +78,6 @@ export const ConjugationDialog = ({
   }, [visible, initialFollowUp]);
 
   const onClickOnPronoun = (pronoun: string) => {
-    console.log(pronoun);
     setFollowUp((prev) => ({
       ...prev,
       [pronoun as keyof TenseConjugation]:
@@ -85,7 +86,6 @@ export const ConjugationDialog = ({
   };
 
   const onClickOnConjugation = (pronoun: string) => {
-    console.log(conjugation);
     setFollowUp((prev) => ({
       ...prev,
       [pronoun as keyof TenseConjugation]:
@@ -93,7 +93,9 @@ export const ConjugationDialog = ({
     }));
   };
 
-  const success = Object.values(followUp).every((value) => value === true);
+  const success = Object.entries(followUp)
+    .filter(([pronoun]) => (isVosotrosEnabled ? true : pronoun !== "vosotros"))
+    .every(([, value]) => value === true);
 
   return (
     <Dialog
@@ -107,31 +109,37 @@ export const ConjugationDialog = ({
       }}
     >
       <div className="conjugation-table">
-        {Object.entries(conjugation).map(([pronoun, conjugation]) => (
-          <div key={pronoun} className="conjugation-row grid gap-4">
-            <div
-              className="pronoun col"
-              onClick={() => onClickOnPronoun(pronoun)}
-            >
-              <span>
-                {conjugationKeys[pronoun as keyof typeof conjugationKeys]}
-              </span>
-              {followUp[pronoun as keyof TenseConjugation] === false && (
-                <CircleX className="text-red-500" />
-              )}
-            </div>
-            <div
-              className="conjugation col"
-              onClick={() => onClickOnConjugation(pronoun)}
-            >
-              <span className="font-bold text-primary-400">{conjugation}</span>
+        {Object.entries(conjugation)
+          .filter(([pronoun]) =>
+            isVosotrosEnabled ? true : pronoun !== "vosotros"
+          )
+          .map(([pronoun, conjugation]) => (
+            <div key={pronoun} className="conjugation-row grid gap-4">
+              <div
+                className="pronoun col"
+                onClick={() => onClickOnPronoun(pronoun)}
+              >
+                <span>
+                  {conjugationKeys[pronoun as keyof typeof conjugationKeys]}
+                </span>
+                {followUp[pronoun as keyof TenseConjugation] === false && (
+                  <CircleX className="text-red-500" />
+                )}
+              </div>
+              <div
+                className="conjugation col"
+                onClick={() => onClickOnConjugation(pronoun)}
+              >
+                <span className="font-bold text-primary-400">
+                  {conjugation}
+                </span>
 
-              {followUp[pronoun as keyof TenseConjugation] === true && (
-                <CircleCheck className="text-green-500" />
-              )}
+                {followUp[pronoun as keyof TenseConjugation] === true && (
+                  <CircleCheck className="text-green-500" />
+                )}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
       </div>
 
       <div className="flex align-items-center justify-content-center">
