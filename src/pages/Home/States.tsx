@@ -6,14 +6,21 @@ import {
   HelpCircle,
   Lightbulb,
   Settings,
-  Hand,
+  CheckCircle,
+  History,
+  FastForward,
+  Award,
 } from "lucide-react";
 import { ConjugationDialog } from "./ConjugationDialog";
 import { useState } from "react";
+import { searchResultWordsAtom } from "@/states/verbs";
+import { useVerb } from "@/hooks/useVerbsQuery";
+import { useAtom } from "jotai";
 
 interface TenseCardProps {
   icon: React.ReactNode;
   title: string;
+  apiKey: string;
   onClick: () => void;
 }
 
@@ -38,40 +45,69 @@ const TenseCard = ({ icon, title, onClick }: TenseCardProps) => {
 
 export const States = () => {
   const [dialogVisible, setDialogVisible] = useState(false);
+  const [selectedTense, setSelectedTense] = useState<string | undefined>(
+    undefined
+  );
   const tenses = [
     {
       icon: <Clock size={24} className="states-icon" />,
       title: "Presente",
+      apiKey: "present",
     },
     {
       icon: <Clock3 size={24} className="states-icon" />,
       title: "Pretérito",
+      apiKey: "preterite",
     },
     {
       icon: <Hourglass size={24} className="states-icon" />,
       title: "Imperfecto",
+      apiKey: "imperfect",
     },
     {
       icon: <Rocket size={24} className="states-icon" />,
       title: "Futuro",
+      apiKey: "future",
     },
     {
       icon: <HelpCircle size={24} className="states-icon" />,
       title: "Condicional",
+      apiKey: "conditional",
     },
     {
       icon: <Lightbulb size={24} className="states-icon" />,
       title: "Subjuntivo Presente",
+      apiKey: "presentSubjunctive",
     },
     {
       icon: <Settings size={24} className="states-icon" />,
       title: "Subjuntivo Imperfecto",
+      apiKey: "imperfectSubjunctive",
     },
     {
-      icon: <Hand size={24} className="states-icon" />,
-      title: "Imperativo",
+      icon: <CheckCircle size={24} className="states-icon" />,
+      title: "Presente Perfecto",
+      apiKey: "presentPerfect",
+    },
+    {
+      icon: <History size={24} className="states-icon" />,
+      title: "Pluscuamperfecto",
+      apiKey: "pastPerfect",
+    },
+    {
+      icon: <FastForward size={24} className="states-icon" />,
+      title: "Futuro Perfecto",
+      apiKey: "futurePerfect",
+    },
+    {
+      icon: <Award size={24} className="states-icon" />,
+      title: "Condicional Perfecto",
+      apiKey: "conditionalPerfect",
     },
   ];
+
+  const [searchResultWords] = useAtom(searchResultWordsAtom);
+  const { data: verb } = useVerb(searchResultWords[0]._id);
 
   return (
     <>
@@ -82,25 +118,28 @@ export const States = () => {
               key={index}
               icon={tense.icon}
               title={tense.title}
-              onClick={() => setDialogVisible(true)}
+              apiKey={tense.apiKey}
+              onClick={() => {
+                setSelectedTense(tense.apiKey);
+                setDialogVisible(true);
+              }}
             />
           ))}
         </div>
       </div>
-      <ConjugationDialog
-        visible={dialogVisible}
-        setVisible={setDialogVisible}
-        verb="hablar"
-        tense="Presente"
-        conjugation={{
-          yo: "hablo",
-          tu: "hablas",
-          el: "habla",
-          nosotros: "hablamos",
-          vosotros: "habláis",
-          ellos: "hablan",
-        }}
-      />
+      {verb &&
+        selectedTense &&
+        verb?.tenses?.[selectedTense as keyof typeof verb.tenses] && (
+          <ConjugationDialog
+            visible={dialogVisible}
+            setVisible={setDialogVisible}
+            verb={verb.word}
+            tense={selectedTense}
+            conjugation={
+              verb.tenses[selectedTense as keyof typeof verb.tenses]!
+            }
+          />
+        )}
     </>
   );
 };

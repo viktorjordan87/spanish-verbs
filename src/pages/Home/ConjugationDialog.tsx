@@ -2,15 +2,7 @@ import { Dialog } from "primereact/dialog";
 import { CircleX, CircleCheck } from "lucide-react";
 import { useState, useEffect, useMemo } from "react";
 import { Gif } from "@/components/Gif";
-
-interface ConjugationData {
-  yo: string;
-  tu: string;
-  el: string;
-  nosotros: string;
-  vosotros: string;
-  ellos: string;
-}
+import type { TenseConjugation } from "@/types";
 
 //object keys to real conjugation keys
 const conjugationKeys = {
@@ -20,6 +12,20 @@ const conjugationKeys = {
   nosotros: "nosotros",
   vosotros: "vosotros",
   ellos: "ellos/ ellas/ ustedes",
+};
+
+const tensesKeys = {
+  present: "Presente",
+  preterite: "Pretérito",
+  imperfect: "Imperfecto",
+  future: "Futuro",
+  conditional: "Condicional",
+  presentSubjunctive: "Subjunctivo Presente",
+  imperfectSubjunctive: "Subjuntivo Imperfecto",
+  presentPerfect: "Presente Perfecto",
+  pastPerfect: "Pluscuamperfecto",
+  futurePerfect: "Futuro Perfecto",
+  conditionalPerfect: "Condicional Perfecto",
 };
 
 export const ConjugationDialog = ({
@@ -33,14 +39,16 @@ export const ConjugationDialog = ({
   setVisible: (visible: boolean) => void;
   verb: string;
   tense: string;
-  conjugation: ConjugationData;
+  conjugation: TenseConjugation;
 }) => {
   const headerElement = (
     <div className="flex flex-column align-items-start gap-2">
       <h3 className="font-bold text-2xl capitalize text-blue-400 mb-0">
         {verb}
       </h3>
-      <h4 className="font-semibold text-base text-700 my-0">{tense}</h4>
+      <h4 className="font-semibold text-base text-700 my-0">
+        {tensesKeys[tense as keyof typeof tensesKeys]}
+      </h4>
     </div>
   );
 
@@ -57,7 +65,7 @@ export const ConjugationDialog = ({
   );
 
   const [followUp, setFollowUp] = useState<{
-    [key in keyof ConjugationData]: boolean | undefined;
+    [key in keyof TenseConjugation]: boolean | undefined;
   }>(initialFollowUp);
 
   // Reset followUp state when dialog closes
@@ -71,8 +79,8 @@ export const ConjugationDialog = ({
     console.log(pronoun);
     setFollowUp((prev) => ({
       ...prev,
-      [pronoun as keyof ConjugationData]:
-        prev[pronoun as keyof ConjugationData] === false ? undefined : false,
+      [pronoun as keyof TenseConjugation]:
+        prev[pronoun as keyof TenseConjugation] === false ? undefined : false,
     }));
   };
 
@@ -80,8 +88,8 @@ export const ConjugationDialog = ({
     console.log(conjugation);
     setFollowUp((prev) => ({
       ...prev,
-      [pronoun as keyof ConjugationData]:
-        prev[pronoun as keyof ConjugationData] === true ? undefined : true,
+      [pronoun as keyof TenseConjugation]:
+        prev[pronoun as keyof TenseConjugation] === true ? undefined : true,
     }));
   };
 
@@ -108,7 +116,7 @@ export const ConjugationDialog = ({
               <span>
                 {conjugationKeys[pronoun as keyof typeof conjugationKeys]}
               </span>
-              {followUp[pronoun as keyof ConjugationData] === false && (
+              {followUp[pronoun as keyof TenseConjugation] === false && (
                 <CircleX className="text-red-500" />
               )}
             </div>
@@ -118,7 +126,7 @@ export const ConjugationDialog = ({
             >
               <span className="font-bold text-primary-400">{conjugation}</span>
 
-              {followUp[pronoun as keyof ConjugationData] === true && (
+              {followUp[pronoun as keyof TenseConjugation] === true && (
                 <CircleCheck className="text-green-500" />
               )}
             </div>
@@ -126,7 +134,9 @@ export const ConjugationDialog = ({
         ))}
       </div>
 
-      <Gif success={success} />
+      <div className="flex align-items-center justify-content-center">
+        <Gif success={success} />
+      </div>
     </Dialog>
   );
 };

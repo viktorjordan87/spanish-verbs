@@ -24,7 +24,7 @@ export const Gif = ({ success }: { success: boolean | undefined }) => {
     <Image
       src={gifPath}
       alt="Gif"
-      width="100%"
+      width="auto"
       height="200px"
       style={{ objectFit: "contain" }}
     />
