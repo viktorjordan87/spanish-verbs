@@ -13,4 +13,5 @@ export const API_CONFIG = {
 
 export const API_ENDPOINTS = {
   verbs: '/api/verbs',
+  translations: '/api/translations',
 } as const;

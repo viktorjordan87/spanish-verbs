@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router";
-import { Home, Languages, Sun, Moon } from "lucide-react";
+import { Home, Languages, Sun, Moon, BookText, Dice6 } from "lucide-react";
 import { useTheme } from "../../hooks/useTheme";
 
 export const Footer = () => {
@@ -17,6 +17,24 @@ export const Footer = () => {
         >
           <Home size={20} />
           <span>List</span>
+        </Link>
+        <Link
+          to="/vocabulary"
+          className={`nav-item ${
+            location.pathname === "/vocabulary" ? "active" : ""
+          }`}
+        >
+          <BookText size={20} />
+          <span>Vocabulary</span>
+        </Link>
+        <Link
+          to="/random"
+          className={`nav-item ${
+            location.pathname === "/random" ? "active" : ""
+          }`}
+        >
+          <Dice6 size={20} />
+          <span>Random</span>
         </Link>
         <Link
           to="/"

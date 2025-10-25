@@ -1,5 +1,4 @@
 import { API_CONFIG } from './config';
-import type { ApiError } from '../types';
 
 class ApiClient {
   private baseUrl: string;
@@ -31,11 +30,13 @@ class ApiClient {
       clearTimeout(timeoutId);
 
       if (!response.ok) {
-        const errorData: ApiError = await response.json().catch(() => ({
+        const errorData = await response.json().catch(() => ({
           message: `HTTP ${response.status}: ${response.statusText}`,
           statusCode: response.status,
         }));
-        throw new Error(errorData.message);
+        // Handle both { message: '...' } and { error: '...' } formats
+        const errorMessage = errorData.message || errorData.error || `HTTP ${response.status}: ${response.statusText}`;
+        throw new Error(errorMessage);
       }
 
       // Handle 204 No Content responses

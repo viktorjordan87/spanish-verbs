@@ -7,3 +7,11 @@ export {
   useDeleteVerb,
   verbsKeys,
 } from './useVerbsQuery';
+
+export {
+  useTranslations,
+  useCreateTranslation,
+  useUpdateTranslation,
+  useDeleteTranslation,
+  translationsKeys,
+} from './useTranslationsQuery';

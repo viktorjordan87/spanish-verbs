@@ -1,5 +1,6 @@
 import { ThemeSwitcher } from "./ThemeSwitcher";
 import { Vosotros } from "./Vosotros";
+import { Password } from "./Password";
 
 export const Settings = () => {
   return (
@@ -11,6 +12,9 @@ export const Settings = () => {
         </div>
         <div className="flex justify-center">
           <Vosotros />
+        </div>
+        <div className="flex justify-center">
+          <Password />
         </div>
       </div>
     </>

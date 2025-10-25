@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^5.90.5",
+    "formik": "^2.4.6",
     "jotai": "^2.15.0",
     "lucide-react": "^0.546.0",
     "primeflex": "^3.3.1",
@@ -20,7 +21,8 @@
     "react-dom": "^19.1.1",
     "react-router": "^7.9.4",
     "sass": "^1.93.2",
-    "use-debounce": "^10.0.6"
+    "use-debounce": "^10.0.6",
+    "yup": "^1.7.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
@@ -40,6 +42,6 @@
     "vite": "npm:rolldown-vite@7.1.14"
   },
   "optionalDependencies": {
-  "@rolldown/binding-linux-x64-gnu": "*"
+    "@rolldown/binding-linux-x64-gnu": "*"
   }
 }

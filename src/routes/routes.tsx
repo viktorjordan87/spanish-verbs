@@ -3,6 +3,8 @@ import { Layout } from "../components/Layout/index.tsx";
 import Home from "../pages/Home/Home.tsx";
 import { Settings } from "@/pages/Settings/Settings.tsx";
 import { List } from "@/pages/List/index.ts";
+import { Vocabulary } from "@/pages/Vocabulary/index.ts";
+import { Random } from "@/pages/Random";
 
 export const routes = createBrowserRouter([
   {
@@ -20,6 +22,14 @@ export const routes = createBrowserRouter([
       {
         path: "/list",
         element: <List />,
+      },
+      {
+        path: "/vocabulary",
+        element: <Vocabulary />,
+      },
+      {
+        path: "/random",
+        element: <Random />,
       },
     ],
   },
